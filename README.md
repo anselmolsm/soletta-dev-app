@@ -153,7 +153,7 @@ If no argument is provided it will get the default server configuration file.
 
     cheat_sheet_url:
           Choose from what url you want to load cheat sheet.
-          Default: http://solettaproject.github.io/docs/nodetypes.
+          Default: http://solettaproject.github.io/nodetypes.
 
     journal_refresh_period:
           The journal refresh interval, in mileseconds

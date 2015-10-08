@@ -32,7 +32,7 @@
     app.controller ('cheatSheetController', ['$scope', 'svConf', '$sce',
         function ($scope, svConf, $sce) {
             // Default url
-            $scope.cheatSheetUrl = $sce.trustAsResourceUrl("http://solettaproject.github.io/docs/nodetypes");
+            $scope.cheatSheetUrl = $sce.trustAsResourceUrl("http://solettaproject.github.io/nodetypes");
             svConf.fetchConf().success(function(data){
                 var cheatSheet = data.cheat_sheet_access;
                 if (cheatSheet === false) {
