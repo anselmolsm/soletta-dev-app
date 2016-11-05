@@ -348,6 +348,7 @@
                                     if (data == 1) {
                                        alert("FBP Service failed to stop");
                                     }
+                                    $scope.runningStartStop = false;
                             }).error(function(){
                                 $scope.runningStartStop = false;
                             });
