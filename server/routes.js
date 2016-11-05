@@ -233,11 +233,11 @@
                             child.stderr.on('data', function(data) {
                                 console.log('stderr: ' + data);
                             });
-                            child.on('close', function(code) {
-                                console.log('closing code: ' + code);
+                            child.on('close', function(rc) {
+                                console.log('closing code: ' + rc);
                                 var array_path = fbp_path.split("/");
                                 runningFBPName = array_path.pop();
-                                res.sendStatus(code);
+                                res.sendStatus(rc ? 500 : 200);
                             });
                         });
                     } else {
@@ -297,12 +297,12 @@
                         stdout = "Unidentified error.";
                     }
                 });
-                child.on('close', function(code) {
+                child.on('close', function(rc) {
                     if (!error) {
-                        console.log('closing code: ' + code);
-                        res.sendStatus(stdout);
+                        console.log('closing code: ' + rc);
+                        res.status(200).send(stdout);
                     } else {
-                        res.sendStatus("Failed to run command on server");
+                        res.status(500).send("Failed to run command on server");
                     }
                 });
             } else {
@@ -484,9 +484,9 @@
             var script = scripts_dir() + "/fbp-runner.sh";
             script = script + ' stop ' + env_file(current_user(req));
             child = exec("bash " + script);
-            child.on('close', function(code) {
-                console.log('closing code: ' + code);
-                res.sendStatus(code);
+            child.on('close', function(rc) {
+                console.log('closing code: ' + rc);
+                res.sendStatus(rc ? 500 : 200);
             });
         } else {
             res.status(404).send("Unsupported api");
