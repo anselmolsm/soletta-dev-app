@@ -15,26 +15,25 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+SYSTEMCTL_COMMAND="$1"
 SCRIPT="$3"
 ENV_PATH="$2"
 SERVICE="fbp-runner@"$(systemd-escape $ENV_PATH)
 
-if [ $1 == "stop" ]; then
-	systemctl stop $SERVICE
-
-elif [ $1 == "start" ] || [ $1 == "restart" ]; then
-    syntax=`sol-fbp-runner -c $SCRIPT | grep OK`
-    systemctl $1 $SERVICE
-    if [ -n "$syntax" ]; then
-        exit 0
-    else
+case $SYSTEMCTL_COMMAND in
+*"start")
+    sol-fbp-runner -c $SCRIPT
+    if [ $? -ne 0 ]; then
         exit 1
     fi
-fi
+    ;;
+"stop")
+    ;;
+    *)
+    echo "Invalid systemctl command: $SYSTEMCTL_COMMAND"
+    exit 1
+    ;;
+esac
 
-st=`systemctl status $SERVICE | grep "Active:"`
-if [ -z "$st" ]; then
-	exit 0
-else
-	exit 1
-fi
+systemctl -q $SYSTEMCTL_COMMAND $SERVICE
+exit $?
