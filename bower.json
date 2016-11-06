@@ -1,5 +1,5 @@
 {
-  "name": "Soletta Development Application",
+  "name": "soletta-development-application",
   "version": "0.0.1",
   "authors": [
     "Anselmo L. S. Melo <anselmo.melo@intel.com>",
@@ -44,12 +44,6 @@
     "angular-material": "~1.0.7"
   },
   "resolutions": {
-    "angular-datatables": "~0.5.4",
-    "angular": "~1.5.3",
-    "jquery": "~2.2.3",
-    "angular-highlightjs": "~0.6.1",
-    "highlightjs": "~9.2.0",
-    "angular-route": "~1.5.3",
     "spin.js": "~2.3.2"
   }
 }
