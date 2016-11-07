@@ -22,6 +22,7 @@
         function ($compile, $scope, $http, $interval, $document, broadcastService,
                   FetchFileFactory, usSpinnerService, svConf) {
                 var isRunningSyntax = false;
+                var isSyntaxValidated = false;
                 var promiseCheckSyntax;
                 var promiseServiceStatus;
                 var promiseRunViewer;
@@ -447,6 +448,7 @@
                                                                                   lines[1]-1, 144),
                                                                                   "errorHighlight",
                                                                                   "fullLine");
+                                            isSyntaxValidated = false;
                                     } else {
                                         $http.get('/api/gen-svg',
                                             {params: {
@@ -459,6 +461,7 @@
                                             console.log("Failed to generate SVG");
                                             $("#svgFrame").html("Failed to generate SVG");
                                         });
+                                        isSyntaxValidated = true;
                                     }
                                 }).error(function(){
                                     $scope.FBPSyntax = data.trim();
@@ -467,6 +470,7 @@
                         $scope.FBPSyntax = "";
                         editor.getSession().removeMarker(markId);
                         editor.getSession().clearAnnotations();
+                        isSyntaxValidated = false;
                     }
                     $scope.checkSyntaxStop();
                 };
@@ -540,6 +544,10 @@
                         isRunningSyntax = true;
                         $scope.checkSyntaxStart();
                         isRunningSyntax = false;
+                    }
+                    var editorContent = editor.getSession().getValue();
+                    if (editorContent.length === 0) {
+                        $("#svgFrame").empty();
                     }
                 };
 
@@ -1249,7 +1257,8 @@
                             if ($scope.isServiceRunning) {
                                 return "button_stop";
                             } else {
-                                if ($scope.fbpType === true) {
+                                var editorContentLength = editor.getSession().getValue().length;
+                                if (editorContentLength > 0 && isSyntaxValidated === true && $scope.fbpType === true) {
                                     return "button_run_on";
                                 } else {
                                     return "button_run_off";
